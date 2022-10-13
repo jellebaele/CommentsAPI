@@ -1,7 +1,11 @@
-import express from 'express';
+import dotenv from 'dotenv';
+import setupServer from './utils/loaders';
 
-const app = express();
+dotenv.config();
 
-app.listen(3000, async () => {
-  console.log('Server is listening at http://localhost:3000');
+const app = setupServer();
+
+const port = process.env.PORT || 3000;
+app.listen(port, async () => {
+  console.log(`Server is listening at http://localhost:${port}`);
 });
