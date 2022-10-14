@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-const productController = (): Router => {
+const commentController = (): Router => {
   const router = Router();
 
   // router.post("/:productid")
@@ -8,4 +8,4 @@ const productController = (): Router => {
   return router;
 };
 
-export default productController;
+export default commentController;
