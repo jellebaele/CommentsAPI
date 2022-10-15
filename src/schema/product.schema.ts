@@ -1,9 +1,27 @@
-import { object, string, TypeOf } from 'zod';
+import { number, object, string, TypeOf } from 'zod';
 
 const postPayload = {
   body: object({
-    text: string({ required_error: 'Text is required' }),
+    text: string({ required_error: 'Text is required' }).max(
+      512,
+      'The text field can only have a maximum length of 512 characters'
+    ),
   }),
+};
+
+const updatePostPayload = {
+  body: object({
+    text: string().max(
+      512,
+      'The text field can only have a maximum length of 512 characters'
+    ),
+    votes: number(),
+  })
+    .partial()
+    .refine(
+      (data) => !!data.text || !!data.votes,
+      'One or more parameters are required to update a post.'
+    ),
 };
 
 const postParameters = {
@@ -16,7 +34,10 @@ const postParameters = {
 
 export const createPostSchema = object({ ...postPayload });
 export const getPostSchema = object({ ...postParameters });
-export const updatePostSchema = object({ ...postPayload, ...postParameters });
+export const updatePostSchema = object({
+  ...updatePostPayload,
+  ...postParameters,
+});
 export const deletePostSchema = object({ ...postParameters });
 
 export type CreatePostInput = TypeOf<typeof createPostSchema>;

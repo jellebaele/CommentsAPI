@@ -2,18 +2,25 @@ import { Request, Response, Router } from 'express';
 import PostService from '../service/PostService';
 import {
   CreatePostInput,
+  createPostSchema,
   DeletePostInput,
+  deletePostSchema,
   GetPostInput,
+  getPostSchema,
   UpdatePostInput,
+  updatePostSchema,
 } from '../schema/product.schema';
+import ResourceValidator from '../api/middleware/ResourceValidator';
 
 const postController = (): Router => {
   const router = Router();
   const postService = new PostService();
+  const resourceValidator = new ResourceValidator();
 
   // Record<string, never> = empty object
   router.post(
     '/',
+    resourceValidator.validate(createPostSchema),
     async (
       req: Request<
         Record<string, never>,
@@ -44,6 +51,7 @@ const postController = (): Router => {
 
   router.get(
     '/:postId',
+    resourceValidator.validate(getPostSchema),
     async (req: Request<GetPostInput['params']>, res: Response) => {
       try {
         const postId = req.params.postId;
@@ -62,6 +70,7 @@ const postController = (): Router => {
 
   router.put(
     '/:postId',
+    resourceValidator.validate(updatePostSchema),
     async (req: Request<UpdatePostInput['params']>, res: Response) => {
       const postId = req.params.postId;
       const update = req.body;
@@ -80,6 +89,7 @@ const postController = (): Router => {
 
   router.delete(
     '/:postId',
+    resourceValidator.validate(deletePostSchema),
     async (req: Request<DeletePostInput['params']>, res: Response) => {
       try {
         const postId = req.params.postId;
