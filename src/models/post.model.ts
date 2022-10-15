@@ -3,8 +3,11 @@ import mongoose from 'mongoose';
 export interface IPost {
   text: string;
   votes?: number;
-  dateCreated: Date;
-  dateUpdated: Date;
+}
+
+export interface IPostDocument extends IPost, mongoose.Document {
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const postSchema = new mongoose.Schema(
@@ -15,6 +18,6 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const PostModel = mongoose.model<IPost>('Post', postSchema);
+const PostModel = mongoose.model<IPostDocument>('Post', postSchema);
 
 export default PostModel;

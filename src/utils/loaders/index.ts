@@ -1,10 +1,16 @@
 import express, { Express } from 'express';
+import setupDatabase from './database';
 import setupExpress from './express';
 
 const setupServer = (): Express => {
   const app = express();
 
-  setupExpress(app);
+  try {
+    setupExpress(app);
+    setupDatabase();
+  } catch (error) {
+    console.log('Something went wrong during setup');
+  }
 
   return app;
 };
