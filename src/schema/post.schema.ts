@@ -1,4 +1,4 @@
-import { number, object, string, TypeOf } from 'zod';
+import { number, object, optional, string, TypeOf } from 'zod';
 
 const postPayload = {
   body: object({
@@ -6,6 +6,7 @@ const postPayload = {
       512,
       'The text field can only have a maximum length of 512 characters'
     ),
+    votes: optional(number()),
   }),
 };
 
